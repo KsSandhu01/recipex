@@ -1,5 +1,5 @@
 # Aan de slag met Create React App
-# Vereiten 
+# Vereisten 
 Spoonacular API
 Firebase 
 IDE 
