@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState,useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import * as htmlToImage from 'html-to-image';
 import dummyImage from '../assets/f.jpg'
 import SaveButton from './SaveButton';
 import SavedList from './SaveList';
 import config from '../config';
-import { isAuthenticatedKey } from '../services/auth';
+import { StoreContext } from '../services/context';
 
 
 const RecipeDetail = () => {
@@ -13,7 +13,9 @@ const RecipeDetail = () => {
   const [feedback, setFeedback] = useState('');
   const [submittedFeedback, setSubmittedFeedback] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  //destructuring isUserLoggedIn
+  const {store:{user:{isUserLoggedIn : isLoggedIn}}} = useContext(StoreContext)
+
 
   const [data, setData] = useState(null);
   const { id } = useParams()
@@ -66,8 +68,6 @@ const RecipeDetail = () => {
         console.error('Error fetching data:', error);
       }
     };
-    const isAuthenticated = JSON.parse(localStorage.getItem(isAuthenticatedKey) ?? 'false');
-    setLoggedIn(isAuthenticated)
     fetchData();
 
   }, []);
@@ -109,6 +109,7 @@ const RecipeDetail = () => {
   };
 
   return (
+
     <>
       <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "1200px", margin: "auto" }} className='detail-card'>
         <div className="card-wrapper " style={{ marginRight: "20px" }}>
@@ -175,7 +176,7 @@ const RecipeDetail = () => {
                 </div>
               )}
             </div>
-
+                
           </>
         )
       }

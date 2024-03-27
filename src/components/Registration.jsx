@@ -60,7 +60,7 @@ const Registration = () => {
             />
             <div>
 
-                <div class="login-form">
+                <div className="login-form">
                     <header>Sign Up</header>
                     <form onSubmit={handleSubmit}>
                         <div>

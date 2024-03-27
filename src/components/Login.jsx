@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState ,useContext} from 'react'
+import { Link,Navigate, useNavigate } from 'react-router-dom';
 import { auth } from './../firebase/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setInitialLoginStatus, setLoggedIn } from '../services/auth';
-
+import { StoreContext } from '../services/context';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+    const {store,setStore} = useContext(StoreContext);
+    const navigte  = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
         handleLogin();
@@ -30,10 +31,17 @@ const Login = () => {
                 setTimeout(() => {
                    
                     localStorage.clear();
+                    setStore({
+                        ...store,
+                        user:{
+                            isUserLoggedIn:true
+                        }
+                        
+                    })
                     setInitialLoginStatus();
                     setLoggedIn();
 
-                    window.location.href = "/";
+                   navigte('/')
                   }, 2000);
             }
         ).catch((e) => {
@@ -58,7 +66,7 @@ const Login = () => {
                 theme="light"
 
             />
-            <div class="login-form">
+            <div className="login-form">
                 <header>Login</header>
                 <form onSubmit={handleSubmit}>
                     <div>

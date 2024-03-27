@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import { useSearchParams } from 'react-router-dom';
 
 import { IoSearch } from "react-icons/io5";
@@ -6,12 +6,11 @@ import RecipeCard from './RecipeCard';
 import config from '../config';
 import { getDislikes, getLikes, saveDislike, saveLike } from '../services/dataService';
 import { setInitialLoginStatus } from '../services/auth';
-
+import { StoreContext } from '../services/context';
 const Recipes = () => {
-
+    //subscribing to store
+    const {store:{recipes:{data}},setStore} = useContext(StoreContext);
     const [param] = useSearchParams()
-
-    const [data, setData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [visibleItems, setVisibleItems] = useState(4);
@@ -37,9 +36,8 @@ const Recipes = () => {
     // ];
 
     useEffect(() => {
-        if (data.length === 0) {
             loadData();
-        }
+       
     }, []);
 
     const loadData = async () => {
@@ -84,7 +82,16 @@ const Recipes = () => {
         const likes = getLikes()
         const dislikes = getDislikes()
         console.log('dislikes', dislikes)
-        setData(list.map(r => ({...r, liked: likes.includes(r.id), disliked: dislikes.includes(r.id)})))
+        //updating list likes in store 
+        setStore((store)=>{
+            return {
+                ...store,
+                recipes:{
+                    ...store.recipes,
+                    data:list.map(r => ({...r, liked: likes.includes(r.id), disliked: dislikes.includes(r.id)}))
+                }
+            }
+        })
     }
 
     return (

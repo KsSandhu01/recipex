@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { MdFastfood } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
@@ -8,26 +8,36 @@ import { RiInstagramFill } from "react-icons/ri";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi";
-import { isAuthenticatedKey, setLoggedOut } from '../services/auth';
-
+import {  setLoggedOut } from '../services/auth';
+import { StoreContext } from '../services/context';
 const Layout = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const location = useLocation();
-    const logout = ()=>{
+    const {store,setStore} = useContext(StoreContext);
+    //handling logout 
+    const logout = () => {
+        setStore({
+            ...store,
+            user:{
+                isUserLoggedIn:false
+            }
+        })
+
         setLoggedOut()
     }
-useEffect(()=>{
-    const isAuthenticated = JSON.parse(localStorage.getItem(isAuthenticatedKey) ?? 'false');
-setLoggedIn(isAuthenticated)
-},[])
-    console.log(location.pathname)
+    useEffect(() => {
+        const {isUserLoggedIn} = store.user;
+        const isAuthenticated = isUserLoggedIn
+        setLoggedIn(isAuthenticated)
+    }, [store.user])
+
 
     return (
         <>
 
             <nav className='d-flex justify-between'>
                 <div >
-                    <Link to='/' class="logo"> <MdFastfood /> Recipex</Link>
+                    <Link to='/' className="logo"> <MdFastfood /> Recipex</Link>
                     {
                         location.pathname === '/login' || location.pathname !== '/sign-up' &&
                         <ul>
@@ -44,20 +54,20 @@ setLoggedIn(isAuthenticated)
 
                 </div>
                 <div>
-                        
-                            <ul>
-                                {
-                                   isLoggedIn && <li><Link to="/login" onClick={logout} className='d-flex items-center'><HiOutlineLogout />Logout</Link></li>
-                                }
-                            </ul>
-                      
-                            <ul>
-                                {
-                                    !isLoggedIn &&  <li><Link to="/login" className='d-flex items-center'><HiOutlineLogin />Login</Link></li>
-                                }
-                               
-                            </ul>
-               
+
+                    <ul>
+                        {
+                            isLoggedIn && <li><Link to="/login" onClick={logout} className='d-flex items-center'><HiOutlineLogout />Logout</Link></li>
+                        }
+                    </ul>
+
+                    <ul>
+                        {
+                            !isLoggedIn && <li><Link to="/login" className='d-flex items-center'><HiOutlineLogin />Login</Link></li>
+                        }
+
+                    </ul>
+
                 </div>
 
             </nav>
@@ -84,15 +94,15 @@ setLoggedIn(isAuthenticated)
             </div>
 
             <footer>
-                <div class="footer">
-                    <div class="row icons d-flex justify-center">
+                <div className="footer">
+                    <div className="row icons d-flex justify-center">
                         <a href="#"><FaFacebook /></a>
                         <a href="#"><RiInstagramFill /></a>
                         <a href="#"><FaYoutube /></a>
                         <a href="#"><FaTwitter /></a>
                     </div>
 
-                    <div class="row">
+                    <div className="row">
                         <ul>
                             <li><a href="#">Contact us</a></li>
                             <li><a href="#">Our Services</a></li>
@@ -102,7 +112,7 @@ setLoggedIn(isAuthenticated)
                         </ul>
                     </div>
 
-                    <div class="row">
+                    <div className="row">
                         Recipex Copyright © 2024 Recipex - All rights reserved || Designed By: Recipex
                     </div>
                 </div>

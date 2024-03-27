@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState,useContext } from 'react'
 import { Link } from 'react-router-dom';
 
 import { AiOutlineLike } from "react-icons/ai";
@@ -10,13 +10,10 @@ import { collection, addDoc, getDocs } from 'firebase/firestore';
 import image from '../assets/f.jpg'
 import { MdDelete } from 'react-icons/md';
 import { db } from '../firebase/firebase';
-import { isAuthenticatedKey, setInitialLoginStatus } from '../services/auth';
+import { StoreContext } from '../services/context';
 const RecipeCard = ({ recipe, isSavedItem = false, onRemove = (id) => { }, onLike = (id, val) => { }, onDislike = (id, val) => { } }) => {
-
-  // const [like, setLike] = useState(false);
-  // const [dislike, setDislike] = useState(false);
-const [isLogin , setIsLogin] = useState();
-
+  //subscribing authentication
+const {store:{user:{isUserLoggedIn : isLogin}}} = useContext(StoreContext)
 
   const handleLikeClick = async () => {
     // if (!like) {
@@ -57,14 +54,6 @@ const [isLogin , setIsLogin] = useState();
     // }
   };
 
-  useEffect(() => {
-    // fetchLikes();
-   
-    const isAuthenticated = JSON.parse(localStorage.getItem(isAuthenticatedKey) ?? 'false');
-    setIsLogin(isAuthenticated)
-    console.log('Is user authenticated?', isAuthenticated);
-
-  }, []);
   return (
     <>
       <div key={recipe.id} style={{ maxWidth: "300px", marginBottom: "2rem" }}>

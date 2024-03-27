@@ -1,19 +1,20 @@
 
-// https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app";
 import {getAuth} from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// Firebase configuration
+// TODO: Add SDKs for Firebase products tha t you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDNI6H7npK3HkkWsWmXItrR6UvXaxiNXAM",
-  authDomain: "food-80454.firebaseapp.com",
+  apiKey: "AIzaSyAwL2Pxl_6quiohE_9ln09AMaKdWozqSxs",
+  authDomain: "fir-b53ea.firebaseapp.com",
   databaseURL: "https://fir-b53ea-default-rtdb.firebaseio.com",
-  projectId: "food-80454",
-  storageBucket: "food-80454.appspot.com",
-  messagingSenderId: "16548063172",
-  appId: "1:16548063172:web:d239258893e1d66efc2691"
+  projectId: "fir-b53ea",
+  storageBucket: "fir-b53ea.appspot.com",
+  messagingSenderId: "446246161582",
+  appId: "1:446246161582:web:b2dfefbd265d5969ba313f"
 };
 
 // Initialize Firebase

@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import SavedList from './SaveList'
 import { getSavedRecipes, removeSavedRecipe } from '../services/dataService';
 import RecipeCard from './RecipeCard';
+import { StoreContext } from '../services/context';
 
 const SavedRecipes = () => {
-  const [savedItems, setSavedItems] = useState([]);
-
+  //subscribing to store and setstore
+  const {store:{recipes:{savedItems}},setStore} = useContext(StoreContext)
   const handleRemove = (id) => {
-    console.log('handleRemove', id)
+    //handling remove item for global store 
+    setStore((store)=>{
+      return {
+        ...store,
+        recipes:{
+          savedItems : store.recipes.savedItems.filter((rec) => rec.id !== id)
+        }
+      }
+    })
     removeSavedRecipe(id)
-    updateData()
   };
-
-  useEffect(() => {
-    updateData()
-  }, [])
-
-  const updateData = () => {
-    console.log(getSavedRecipes())
-    setSavedItems(getSavedRecipes())
-  }
 
   return (
     <div style={{padding: '30px 30px'}}>
